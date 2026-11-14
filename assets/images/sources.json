@@ -1,0 +1,115 @@
+[
+  {
+    "name": "linen-lounge",
+    "path": "assets/images/linen-lounge.jpg",
+    "source": "https://unsplash.com/photos/srzKmNLovaQ",
+    "author": "EZcurtain Life",
+    "url": "https://images.unsplash.com/photo-1754613389158-3b13a051a81a?auto=format&fit=crop&w=1800&q=85&fm=jpg"
+  },
+  {
+    "name": "timber-hallway",
+    "path": "assets/images/timber-hallway.jpg",
+    "source": "https://unsplash.com/photos/qraqqY9i860",
+    "author": "Zara Johnson",
+    "url": "https://images.unsplash.com/photo-1778172884832-78a5de5ec3d2?auto=format&fit=crop&w=1800&q=85&fm=jpg"
+  },
+  {
+    "name": "wood-living-room",
+    "path": "assets/images/wood-living-room.jpg",
+    "source": "https://unsplash.com/photos/CybeDUWowgw",
+    "author": "Marcel Strauss",
+    "url": "https://images.unsplash.com/photo-1754912895549-48470d574792?auto=format&fit=crop&w=1800&q=85&fm=jpg"
+  },
+  {
+    "name": "artisan-dining",
+    "path": "assets/images/artisan-dining.jpg",
+    "source": "https://unsplash.com/photos/AptA9A5gjL0",
+    "author": "Rochelle Lee",
+    "url": "https://images.unsplash.com/photo-1763616310443-f0d738c3206e?auto=format&fit=crop&w=1800&q=85&fm=jpg"
+  },
+  {
+    "name": "sunlit-sideboard",
+    "path": "assets/images/sunlit-sideboard.jpg",
+    "source": "https://unsplash.com/photos/aX1TTOuq83M",
+    "author": "Julia / Beazy",
+    "url": "https://images.unsplash.com/photo-1585128792020-803d29415281?auto=format&fit=crop&w=1800&q=85&fm=jpg"
+  },
+  {
+    "name": "desert-retreat",
+    "path": "assets/images/desert-retreat.jpg",
+    "source": "https://unsplash.com/photos/BCNNS0gVCTc",
+    "author": "Austin Curtis",
+    "url": "https://images.unsplash.com/photo-1706553109150-b1d60a4a3cd1?auto=format&fit=crop&w=1800&q=85&fm=jpg"
+  },
+  {
+    "name": "hotel-suite",
+    "path": "assets/images/hotel-suite.jpg",
+    "source": "https://unsplash.com/photos/5BV56SdvLmo",
+    "author": "Point3D Commercial Imaging Ltd.",
+    "url": "https://images.unsplash.com/photo-1631049552057-403cdb8f0658?auto=format&fit=crop&w=1800&q=85&fm=jpg"
+  },
+  {
+    "name": "soft-bedroom",
+    "path": "assets/images/soft-bedroom.jpg",
+    "source": "https://unsplash.com/photos/qVwFsimVcWQ",
+    "author": "Jean-Philippe Delberghe",
+    "url": "https://images.unsplash.com/photo-1595268396332-9af381e5935e?auto=format&fit=crop&w=1800&q=85&fm=jpg"
+  },
+  {
+    "name": "green-courtyard",
+    "path": "assets/images/green-courtyard.jpg",
+    "source": "https://unsplash.com/photos/NvsBWuLRtSM",
+    "author": "Annie Spratt",
+    "url": "https://images.unsplash.com/photo-1772028284145-d66956bf2b91?auto=format&fit=crop&w=1800&q=85&fm=jpg"
+  },
+  {
+    "name": "coastal-living",
+    "path": "assets/images/coastal-living.jpg",
+    "source": "https://unsplash.com/photos/tPz3Lhh3z_4",
+    "author": "Brian Zajac",
+    "url": "https://images.unsplash.com/photo-1762529716272-b316f61502e7?auto=format&fit=crop&w=1800&q=85&fm=jpg"
+  },
+  {
+    "name": "wood-kitchen",
+    "path": "assets/images/wood-kitchen.jpg",
+    "source": "https://unsplash.com/photos/mhDeeOvBs9o",
+    "author": "Clay Banks",
+    "url": "https://images.unsplash.com/photo-1759239572496-4ec13e7643d6?auto=format&fit=crop&w=1800&q=85&fm=jpg"
+  },
+  {
+    "name": "warm-bedroom",
+    "path": "assets/images/warm-bedroom.jpg",
+    "source": "https://unsplash.com/photos/Xbe5BfScmvM",
+    "author": "Clay Banks",
+    "url": "https://images.unsplash.com/photo-1758072328635-586f3c121af2?auto=format&fit=crop&w=1800&q=85&fm=jpg"
+  },
+  {
+    "name": "marusthal-pavilion-concept",
+    "path": "assets/images/marusthal-pavilion-concept.png",
+    "source": "Built-in image_gen",
+    "kind": "AI-generated architectural concept",
+    "tags": [
+      "ochre-rammed-earth",
+      "sandstone",
+      "desert-pavilion",
+      "sunken-lounge"
+    ],
+    "alt": "AI-generated concept of an ochre desert pavilion with shaded openings and a sunken sandstone lounge",
+    "prompt_file": "assets/images/concept-prompts.json"
+  },
+  {
+    "name": "kochi-backwater-concept",
+    "path": "assets/images/kochi-backwater-concept.png",
+    "source": "Built-in image_gen",
+    "kind": "AI-generated architectural concept",
+    "tags": [
+      "kerala-backwaters",
+      "waterfront-home",
+      "teak-verandah",
+      "palm-trees",
+      "water-reflections"
+    ],
+    "alt": "AI-generated concept of a Kerala backwater home with a timber verandah, coconut palms and water reflections",
+    "prompt_file": "assets/images/concept-prompts.json"
+  }
+]

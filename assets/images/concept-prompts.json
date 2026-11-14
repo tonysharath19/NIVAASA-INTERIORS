@@ -1,0 +1,13 @@
+{
+  "generator": "Built-in image_gen",
+  "images": [
+    {
+      "file": "marusthal-pavilion-concept.png",
+      "prompt": "Create one photorealistic architectural concept visualization for Marusthal Pavilion, a contemporary boutique desert retreat inspired by Jaisalmer Rajasthan. Portrait 4:5 composition. Close architectural view of a low minimalist ochre rammed-earth pavilion, deep shaded openings, honey sandstone floors, sunken built-in sandstone lounge with natural linen cushions, restrained bronze door hardware, sparse flat Thar desert sand visible beyond. Architecture fills most of image, tactile warm material details, calm late afternoon light, editorial architecture photography style. No mountains, no palace, no historic monument, no text, no watermarks. This is a fictional design concept, not a real photographed project."
+    },
+    {
+      "file": "kochi-backwater-concept.png",
+      "prompt": "Create one photorealistic architectural concept visualization for Kochi Backwater Residence, a contemporary Kerala waterfront home. Landscape 16:11 composition. View from across a narrow calm backwater toward a low private home with deep shaded timber verandah, reclaimed teak screens and posts, honed pale limestone terrace, full-height glazing with soft cotton lounge seating inside. Water and clear reflections occupy foreground, coconut palms and lush Kerala vegetation behind house. Refined understated Indian residential architecture, natural humid morning light, realistic material textures, editorial architectural photography style. Water and house both clearly visible. No ocean, no beach, no houseboat, no resort bungalows, no text, no watermark. Fictional architectural concept, not real project photography."
+    }
+  ]
+}

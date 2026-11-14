@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+  <title>NIVAAS STUDIO — Architecture & Interior Design in India</title>
+  <meta name="description" content="Nivaas Studio is an interior architecture studio in India that designs calm homes, boutique hotels and handmade furniture in Bengaluru, Mumbai and across the country." />
+  <meta name="theme-color" content="#1A1917" />
+  <meta property="og:title" content="NIVAAS STUDIO — Architecture & Interior Design in India" />
+  <meta property="og:description" content="Spaces shaped by light, stone & calm." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231A1917'/%3E%3Ctext x='50' y='68' font-size='56' text-anchor='middle' fill='%23F6F3EE' font-family='serif'%3EN%3C/text%3E%3C/svg%3E" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            alabaster: '#F6F3EE',
+            sand: '#EAE4DC',
+            stone: '#D6CEC2',
+            charcoal: '#1A1917',
+            espresso: '#2C2925',
+            bronze: '#8C6A4B',
+            bronzeLt: '#B8946F',
+            muted: '#6E685F'
+          },
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- GSAP & ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #F6F3EE;
+      --fg: #1A1917;
+      --accent: #8C6A4B;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg);
+      color: var(--fg);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: clip; /* hidden broke position:sticky */
+      width: 100%;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Give small copy and navigation enough weight for comfortable reading. */
+    body .text-xs,
+    body .text-sm,
+    body .text-\[10px\],
+    body .text-\[11px\],
+    body .custom-cursor-pill,
+    #navbar a,
+    #navbar button,
+    #mobileMenu .mobile-link {
+      font-weight: 600;
+    }
+
+    #our-belief p,
+    #our-belief blockquote {
+      font-weight: 700;
+    }
+
+    /* Fluid Typography */
+    .fluid-display {
+      font-size: clamp(2.85rem, 8.2vw, 8.5rem);
+      line-height: 0.94;
+      letter-spacing: -0.025em;
+    }
+
+    .fluid-h2 {
+      font-size: clamp(2.2rem, 5.2vw, 5rem);
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+    }
+
+    .fluid-h3 {
+      font-size: clamp(1.5rem, 2.8vw, 2.5rem);
+      line-height: 1.15;
+    }
+
+    /* Subtle film grain texture overlay */
+    .grain-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 90;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    /* Custom Cursor (Desktop Only) */
+    @media (hover: hover) and (pointer: fine) {
+      .custom-cursor {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 12px;
+        height: 12px;
+        background: #F6F3EE;
+        mix-blend-mode: difference;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1), height 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .custom-cursor-pill {
+        position: fixed;
+        top: 0;
+        left: 0;
+        padding: 10px 20px;
+        background: rgba(26, 25, 23, 0.88);
+        backdrop-filter: blur(8px);
+        color: #F6F3EE;
+        border-radius: 999px;
+        font-size: 11px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        pointer-events: none;
+        z-index: 9998;
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+        white-space: nowrap;
+      }
+
+      .custom-cursor-pill.active {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+    }
+
+    @media (hover: none), (pointer: coarse) {
+      .custom-cursor, .custom-cursor-pill {
+        display: none !important;
+      }
+    }
+
+    /* Text Masking Helpers */
+    .word-mask {
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: bottom;
+      padding-bottom: 0.08em;
+      margin-bottom: -0.08em;
+    }
+    .word-inner {
+      display: inline-block;
+      will-change: transform;
+    }
+
+    /* Image Hover Effects & Reveal Masks */
+    .img-reveal-wrap {
+      overflow: hidden;
+      position: relative;
+      clip-path: inset(0% 0% 0% 0%);
+      will-change: clip-path;
+    }
+
+    .img-reveal-wrap img {
+      transition: scale 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
+    }
+
+    .project-card:hover .img-reveal-wrap img {
+      scale: 1.06; /* GSAP owns transform (parallax), so hover uses scale */
+    }
+
+    /* Underline hover animation */
+    .hover-line {
+      position: relative;
+      display: inline-block;
+    }
+    .hover-line::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 100%;
+      height: 1px;
+      background-color: currentColor;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .hover-line:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    /* Marquee */
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marqueeScroll 34s linear infinite;
+    }
+    .marquee-track:hover {
+      animation-play-state: paused;
+    }
+    @keyframes marqueeScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F6F3EE;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #C5BCB0;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #8C6A4B;
+    }
+
+    /* Service Accordion Active States */
+    .service-row {
+      transition: background-color 0.4s ease, padding 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .service-row.active {
+      background-color: rgba(234, 228, 220, 0.6);
+    }
+    @media (max-width: 767px) {
+      .service-row #servicePreview { margin-top: 1.5rem; }
+    }
+  
+    /* ---- Production upgrades ---- */
+    html.lenis, html.lenis body { height: auto; }
+    .lenis.lenis-smooth { scroll-behavior: auto !important; }
+    @media (prefers-reduced-motion: no-preference) { html:not(.lenis) { scroll-behavior: smooth; } }
+    .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    :focus-visible { outline: 2px solid #B8946F; outline-offset: 3px; border-radius: 2px; }
+    #progress { position: fixed; top: 0; left: 0; width: 100%; height: 2px; background: #8C6A4B; transform: scaleX(0); transform-origin: 0 50%; z-index: 60; pointer-events: none; }
+    .nav-bar { padding-top: max(1.1rem, env(safe-area-inset-top)); padding-bottom: 1.1rem; transition: transform .6s cubic-bezier(.16,1,.3,1), background-color .4s, color .4s, box-shadow .4s, padding .4s; }
+    .nav-bar.is-scrolled { background: rgba(246,243,238,.82); color: #1A1917; -webkit-backdrop-filter: blur(16px) saturate(1.4); backdrop-filter: blur(16px) saturate(1.4); box-shadow: 0 1px 0 rgba(26,25,23,.08); padding-top: max(.75rem, env(safe-area-inset-top)); padding-bottom: .75rem; }
+    .nav-bar.is-scrolled #openInquiryBtn:hover { background: #1A1917 !important; color: #F6F3EE !important; }
+    .nav-bar.nav-hidden { transform: translateY(-110%); }
+    .nav-bar.menu-open { background: transparent !important; color: #F6F3EE !important; box-shadow: none !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; transform: none !important; }
+    #projectModalCard, #inquiryPanel, #mobileMenu { overscroll-behavior: contain; }
+    @media (min-width: 768px) {
+      #projectsGrid.is-filtered .project-card { margin-top: 0 !important; grid-column: span 6 / span 6; }
+    }
+    @media (prefers-reduced-motion: reduce) { .marquee-track { animation-duration: 90s; } }
+  </style>
+</head>
+<body class="selection:bg-bronze selection:text-alabaster">
+  <a href="#works" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[200] focus:bg-alabaster focus:text-charcoal focus:px-4 focus:py-2 text-xs uppercase tracking-[0.2em]">Skip to work</a>
+  <div id="progress" aria-hidden="true"></div>
+
+  <!-- Subtle Tactile Grain -->
+  <div class="grain-overlay"></div>
+
+  <!-- Custom Cursor -->
+  <div id="cursorDot" class="custom-cursor"></div>
+  <div id="cursorPill" class="custom-cursor-pill">View Space</div>
+
+  <!-- Preloader -->
+  <div id="preloader" class="fixed inset-0 z-[100] bg-charcoal text-alabaster flex flex-col justify-between p-6 sm:p-12">
+    <div class="flex justify-between items-center text-xs uppercase tracking-[0.25em] text-stone/70">
+      <span>Nivaas Studio</span>
+      <span>Architecture & Interiors</span>
+    </div>
+    <div class="my-auto overflow-hidden">
+      <div id="preloaderTitle" class="font-serif italic text-4xl sm:text-6xl md:text-7xl tracking-tight text-center translate-y-full">
+        Shaping Calm Spaces
+      </div>
+      <div class="mt-8 max-w-xs mx-auto h-[1px] bg-stone/20 overflow-hidden">
+        <div id="preloaderBar" class="h-full w-0 bg-alabaster"></div>
+      </div>
+    </div>
+    <div class="flex justify-between items-end text-xs uppercase tracking-[0.2em] text-stone/70">
+      <span>Bengaluru · Mumbai · Across India</span>
+      <span id="preloaderCount" class="font-serif text-2xl sm:text-3xl text-alabaster">0%</span>
+    </div>
+  </div>
+
+  <!-- Navigation Header -->
+  <header id="navbar" class="fixed top-0 left-0 right-0 z-50 nav-bar px-5 sm:px-10 lg:px-16 flex items-center justify-between text-alabaster">
+    <a href="#hero" class="font-serif text-2xl sm:text-3xl tracking-wider font-medium flex items-center gap-2 magnetic-el">
+      NIVAAS STUDIO
+    </a>
+
+    <!-- Desktop Links -->
+    <nav class="hidden md:flex items-center gap-10 text-xs uppercase tracking-[0.2em]">
+      <a href="#works" class="hover-line py-1">Our Work</a>
+      <a href="#philosophy" class="hover-line py-1">About Us</a>
+      <a href="#atmospheres" class="hover-line py-1">Design Studies</a>
+      <a href="#disciplines" class="hover-line py-1">Services</a>
+      <button id="openInquiryBtn" class="ml-2 px-5 py-2.5 border border-current rounded-full hover:bg-alabaster hover:text-charcoal transition-colors duration-300 uppercase tracking-[0.2em] text-[11px] magnetic-el">
+        Inquire
+      </button>
+    </nav>
+
+    <!-- Mobile Menu Trigger -->
+    <button id="mobileMenuBtn" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileMenu" class="md:hidden flex flex-col gap-1.5 p-2 z-50">
+      <span id="burgerLine1" class="w-6 h-[1.5px] bg-current transition-transform duration-300 origin-center"></span>
+      <span id="burgerLine2" class="w-6 h-[1.5px] bg-current transition-transform duration-300 origin-center"></span>
+    </button>
+  </header>
+
+  <!-- Fullscreen Mobile Navigation -->
+  <div id="mobileMenu" class="fixed inset-0 z-40 bg-charcoal text-alabaster pointer-events-none opacity-0 transition-opacity duration-500 flex flex-col justify-between gap-10 p-6 pt-28 pb-[max(2.5rem,env(safe-area-inset-bottom))] overflow-y-auto" aria-hidden="true" data-lenis-prevent>
+    <div class="flex flex-col gap-5 font-serif text-4xl sm:text-5xl">
+      <a href="#works" class="mobile-link py-1 border-b border-stone/15 flex justify-between items-center">
+        <span>Our Work</span>
+        
+      </a>
+      <a href="#philosophy" class="mobile-link py-1 border-b border-stone/15 flex justify-between items-center">
+        <span>About Us</span>
+        
+      </a>
+      <a href="#atmospheres" class="mobile-link py-1 border-b border-stone/15 flex justify-between items-center">
+        <span>Design Studies</span>
+        
+      </a>
+      <a href="#disciplines" class="mobile-link py-1 border-b border-stone/15 flex justify-between items-center">
+        <span>Services</span>
+        
+      </a>
+      <button id="mobileInquireBtn" class="mobile-link text-left py-1 text-bronzeLt italic flex justify-between items-center">
+        <span>Start a Project</span>
+        <span class="text-sm font-sans not-italic">→</span>
+      </button>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 text-xs uppercase tracking-[0.18em] text-stone/60 pt-6 border-t border-stone/15">
+      <div>
+        <p class="text-alabaster mb-1">Studio</p>
+        <p>studio@nivaas.in</p>
+      </div>
+      <div>
+        <p class="text-alabaster mb-1">Social</p>
+        <p>Instagram · Pinterest</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main>
+
+    <!-- HERO SECTION (Full-screen picture-first architecture experience) -->
+    <section id="hero" class="relative min-h-[100svh] w-full overflow-hidden flex flex-col justify-end bg-charcoal text-alabaster">
+      <!-- Background Hero Image with GSAP Parallax -->
+      <div class="absolute inset-0 z-0 overflow-hidden">
+        <img
+          id="heroImg" fetchpriority="high"
+          src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=2200&q=85"
+          alt="Warm minimalist architectural living space"
+          class="w-full h-[118%] object-cover object-center scale-110 brightness-[0.72]"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-charcoal/85 via-charcoal/25 to-charcoal/30"></div>
+      </div>
+
+      <!-- Floating Editorial Caption (Top Right on Desktop) -->
+      <div class="relative z-10 px-5 sm:px-10 lg:px-16 pt-28 sm:pt-32 mb-auto flex justify-between items-start">
+        <div class="hidden sm:block text-xs uppercase tracking-[0.22em] text-alabaster/75 max-w-xs hero-fade">
+          Warm, simple design for modern Indian homes
+        </div>
+        <div class="ml-auto text-right text-xs uppercase tracking-[0.22em] text-alabaster/80 hero-fade">
+          <span class="inline-block w-2 h-2 rounded-full bg-sand mr-2 animate-pulse"></span>
+          Now booking projects for 2027
+        </div>
+      </div>
+
+      <!-- Hero Main Display Title -->
+      <div class="relative z-10 px-5 sm:px-10 lg:px-16 pb-8 sm:pb-14 lg:pb-16">
+        <h1 class="font-serif font-light fluid-display text-alabaster max-w-6xl hero-split">
+          Spaces shaped by <span class="italic font-normal text-sand">light</span>, stone &amp; calm.
+        </h1>
+
+        <div class="mt-8 sm:mt-10 pt-6 border-t border-alabaster/20 flex flex-col sm:flex-row sm:items-end justify-between gap-6 hero-fade">
+          <p class="text-sm sm:text-base text-alabaster/80 max-w-md font-light leading-relaxed">
+            An interior architecture studio designing calm homes, boutique hotels and handmade furniture across India.
+          </p>
+
+          <div class="flex items-center gap-6">
+            <a href="#works" class="group inline-flex items-center gap-4 text-xs uppercase tracking-[0.22em] text-alabaster">
+              <span>View Our Work</span>
+              <span class="w-10 h-10 rounded-full border border-alabaster/40 flex items-center justify-center group-hover:bg-alabaster group-hover:text-charcoal transition-all duration-300">
+                <svg class="w-4 h-4 transform group-hover:translate-y-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                </svg>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EDITORIAL PHILOSOPHY & LAYERED PICTURE COLLAGE -->
+    <section id="philosophy" class="py-20 sm:py-32 lg:py-40 px-5 sm:px-10 lg:px-16 max-w-[1600px] mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        <!-- Left Text Column -->
+        <div class="lg:col-span-6">
+          <div class="flex items-center gap-3 text-xs uppercase tracking-[0.25em] text-bronze mb-6">
+            <span class="w-8 h-[1px] bg-bronze"></span>
+            <span>About Us</span>
+          </div>
+
+          <h2 class="font-serif fluid-h2 font-light text-charcoal split-reveal">
+            Design you can feel before you touch it.
+          </h2>
+
+          <p class="mt-8 text-base sm:text-lg text-muted font-light leading-relaxed max-w-xl fade-up">
+            We believe real luxury comes from good proportions, natural materials that age well, and the way daylight moves across lime plaster, Kota stone and teak. Every room is designed like a framed view.
+          </p>
+
+          <!-- Key Metrics -->
+          <div class="mt-12 pt-8 border-t border-stone/70 grid grid-cols-3 gap-4 sm:gap-8 fade-up">
+            <div>
+              <span class="font-serif text-3xl sm:text-5xl text-charcoal counter" data-target="48">0</span>
+              <p class="text-[11px] sm:text-xs uppercase tracking-[0.18em] text-muted mt-1">Custom Spaces</p>
+            </div>
+            <div>
+              <span class="font-serif text-3xl sm:text-5xl text-charcoal counter" data-target="14">0</span>
+              <p class="text-[11px] sm:text-xs uppercase tracking-[0.18em] text-muted mt-1">Design Awards</p>
+            </div>
+            <div>
+              <span class="font-serif text-3xl sm:text-5xl text-charcoal counter" data-target="3">0</span>
+              <p class="text-[11px] sm:text-xs uppercase tracking-[0.18em] text-muted mt-1">Cities</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Asymmetric Dual Picture Composition -->
+        <div class="lg:col-span-6 relative">
+          <div class="grid grid-cols-12 gap-4 sm:gap-6 items-end">
+            <div class="col-span-8 sm:col-span-7 img-reveal-wrap rounded-sm aspect-[3/4] shadow-2xl shadow-charcoal/5">
+              <img data-image-topic="natural-materials-and-daylight" loading="lazy" decoding="async"
+                src="assets/images/wood-living-room.jpg"
+                alt="Timber-panelled living and dining room with crafted wooden furniture"
+                class="w-full h-[115%] object-cover parallax-img"
+              />
+            </div>
+            <div class="col-span-4 sm:col-span-5 -ml-8 sm:ml-0 mb-8 sm:mb-14 z-10">
+              <div class="img-reveal-wrap rounded-sm aspect-[4/5] border-4 sm:border-8 border-alabaster shadow-xl">
+                <img data-image-topic="natural-materials-and-daylight" loading="lazy" decoding="async"
+                  src="assets/images/sunlit-sideboard.jpg"
+                  alt="Warm wood sideboard, ceramic vessels and a pale armchair in natural light"
+                  class="w-full h-[115%] object-cover parallax-img"
+                />
+              </div>
+              <p class="hidden sm:block mt-4 text-xs italic font-serif text-muted">
+                Natural timber, soft textures and generous daylight.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SELECTED WORKS (Picture-Driven Filterable Asymmetric Gallery) -->
+    <section id="works" class="py-20 sm:py-28 px-5 sm:px-10 lg:px-16 max-w-[1680px] mx-auto">
+      <!-- Header & Category Filter -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-8 pb-12 border-b border-stone">
+        <div>
+          <div class="flex items-center gap-3 text-xs uppercase tracking-[0.25em] text-bronze mb-4">
+            <span class="w-8 h-[1px] bg-bronze"></span>
+            <span>Our Work</span>
+          </div>
+          <h2 class="font-serif fluid-h2 font-light split-reveal">Selected Projects</h2>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="flex flex-wrap gap-2 sm:gap-3" id="filterBar">
+          <button data-filter="all" class="filter-btn active px-4 py-2 rounded-full text-xs uppercase tracking-[0.18em] bg-charcoal text-alabaster transition-all duration-300">
+            All
+          </button>
+          <button data-filter="residential" class="filter-btn px-4 py-2 rounded-full text-xs uppercase tracking-[0.18em] border border-stone text-charcoal hover:border-charcoal transition-all duration-300">
+            Residential
+          </button>
+          <button data-filter="hospitality" class="filter-btn px-4 py-2 rounded-full text-xs uppercase tracking-[0.18em] border border-stone text-charcoal hover:border-charcoal transition-all duration-300">
+            Hospitality
+          </button>
+          <button data-filter="penthouse" class="filter-btn px-4 py-2 rounded-full text-xs uppercase tracking-[0.18em] border border-stone text-charcoal hover:border-charcoal transition-all duration-300">
+            Penthouse
+          </button>
+        </div>
+      </div>
+
+      <!-- Picture-Based Staggered Project Grid -->
+      <div id="projectsGrid" class="mt-14 grid grid-cols-1 md:grid-cols-12 gap-y-16 md:gap-x-10 lg:gap-x-14">
+
+        <!-- Project 01 (Wide Feature) -->
+        <article
+          class="project-card md:col-span-7 group cursor-pointer"
+          data-category="residential"
+          data-cursor="View Home"
+          data-title="Aangan House"
+          data-location="Mysuru, India · 2024"
+          data-area="4,500 sq ft Private Home"
+          data-desc="Built around a quiet green courtyard, Aangan House pairs dark charred teak cladding with polished Kota stone floors and custom carved jaali screens that turn soft morning light into a warm glow."
+          data-img="assets/images/green-courtyard.jpg"
+        >
+          <div class="img-reveal-wrap aspect-[16/11] w-full bg-sand rounded-sm">
+            <img data-image-topic="residential-and-hospitality" loading="lazy" decoding="async"
+              src="assets/images/green-courtyard.jpg"
+              alt="Plant-filled courtyard framed by timber balconies and shaded walkways"
+              class="w-full h-[114%] object-cover parallax-img"
+            />
+            <div class="absolute top-4 right-4 px-3 py-1.5 bg-alabaster/90 backdrop-blur-md text-[10px] uppercase tracking-[0.2em] text-charcoal rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              Case Study ↗
+            </div>
+          </div>
+          <div class="mt-5 flex items-baseline justify-between gap-4">
+            <div>
+              <h3 class="font-serif fluid-h3 text-charcoal group-hover:text-bronze transition-colors">Aangan House</h3>
+              <p class="text-xs uppercase tracking-[0.2em] text-muted mt-1">Residential · Mysuru, India</p>
+            </div>
+            <span class="font-serif italic text-lg text-muted">2024</span>
+          </div>
+        </article>
+
+        <!-- Project 02 (Tall Portrait Offset) -->
+        <article
+          class="project-card md:col-span-5 md:mt-24 group cursor-pointer"
+          data-category="penthouse"
+          data-cursor="View Penthouse"
+          data-title="Marine Drive Penthouse"
+          data-location="Mumbai, India · 2024"
+          data-area="3,100 sq ft Heritage Penthouse"
+          data-desc="Set under original timber beams in an old Mumbai art deco building, this collector's home balances solid Makrana marble with custom textured seating and gallery-quality lighting."
+          data-img="assets/images/linen-lounge.jpg"
+        >
+          <div class="img-reveal-wrap aspect-[4/5] w-full bg-sand rounded-sm">
+            <img data-image-topic="residential-and-hospitality" loading="lazy" decoding="async"
+              src="assets/images/linen-lounge.jpg"
+              alt="Cream lounge chairs and linen curtains framing tall sunlit windows"
+              class="w-full h-[114%] object-cover parallax-img"
+            />
+            <div class="absolute top-4 right-4 px-3 py-1.5 bg-alabaster/90 backdrop-blur-md text-[10px] uppercase tracking-[0.2em] text-charcoal rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              Case Study ↗
+            </div>
+          </div>
+          <div class="mt-5 flex items-baseline justify-between gap-4">
+            <div>
+              <h3 class="font-serif fluid-h3 text-charcoal group-hover:text-bronze transition-colors">Marine Drive Penthouse</h3>
+              <p class="text-xs uppercase tracking-[0.2em] text-muted mt-1">Penthouse · Mumbai, India</p>
+            </div>
+            <span class="font-serif italic text-lg text-muted">2024</span>
+          </div>
+        </article>
+
+        <!-- Project 03 (Tall Portrait Left) -->
+        <article
+          class="project-card md:col-span-5 group cursor-pointer"
+          data-category="hospitality"
+          data-cursor="View Retreat"
+          data-title="Marusthal Pavilion"
+          data-location="Jaisalmer, India · 2023"
+          data-area="7,300 sq ft Boutique Retreat"
+          data-desc="Rammed-earth walls tinted with local ochre blend the building into the desert horizon. Custom bronze hardware and sunken sandstone lounges invite slow, quiet afternoons."
+          data-img="assets/images/marusthal-pavilion-concept.png"
+        >
+          <div class="img-reveal-wrap aspect-[4/5] w-full bg-sand rounded-sm">
+            <img data-image-topic="ochre-rammed-earth,sandstone,desert-pavilion,sunken-lounge" data-image-kind="ai-generated-concept" loading="lazy" decoding="async"
+              src="assets/images/marusthal-pavilion-concept.png"
+              alt="AI-generated concept of an ochre desert pavilion with shaded openings and a sunken sandstone lounge"
+              class="w-full h-[114%] object-cover parallax-img"
+            />
+            <span class="absolute bottom-4 left-4 px-3 py-1.5 bg-charcoal/75 text-alabaster text-[10px] uppercase tracking-[0.16em] rounded-full">AI concept visualization</span>
+            <div class="absolute top-4 right-4 px-3 py-1.5 bg-alabaster/90 backdrop-blur-md text-[10px] uppercase tracking-[0.2em] text-charcoal rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              Case Study ↗
+            </div>
+          </div>
+          <div class="mt-5 flex items-baseline justify-between gap-4">
+            <div>
+              <h3 class="font-serif fluid-h3 text-charcoal group-hover:text-bronze transition-colors">Marusthal Pavilion</h3>
+              <p class="text-xs uppercase tracking-[0.2em] text-muted mt-1">Hospitality · Jaisalmer</p>
+            </div>
+            <span class="font-serif italic text-lg text-muted">2023</span>
+          </div>
+        </article>
+
+        <!-- Project 04 (Wide Feature Right) -->
+        <article
+          class="project-card md:col-span-7 md:mt-20 group cursor-pointer"
+          data-category="residential"
+          data-cursor="View Home"
+          data-title="Kochi Backwater Residence"
+          data-location="Kochi, India · 2023"
+          data-area="3,800 sq ft Backwater Home"
+          data-desc="Made with reclaimed teak planks and honed limestone, this backwater home takes in cool reflections from the water and softens them with handloom cotton upholstery and hand-carved stone seating."
+          data-img="assets/images/kochi-backwater-concept.png"
+        >
+          <div class="img-reveal-wrap aspect-[16/11] w-full bg-sand rounded-sm">
+            <img data-image-topic="kerala-backwaters,waterfront-home,teak-verandah,palm-trees,water-reflections" data-image-kind="ai-generated-concept" loading="lazy" decoding="async"
+              src="assets/images/kochi-backwater-concept.png"
+              alt="AI-generated concept of a Kerala backwater home with a timber verandah, coconut palms and water reflections"
+              class="w-full h-[114%] object-cover parallax-img"
+            />
+            <span class="absolute bottom-4 left-4 px-3 py-1.5 bg-charcoal/75 text-alabaster text-[10px] uppercase tracking-[0.16em] rounded-full">AI concept visualization</span>
+            <div class="absolute top-4 right-4 px-3 py-1.5 bg-alabaster/90 backdrop-blur-md text-[10px] uppercase tracking-[0.2em] text-charcoal rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              Case Study ↗
+            </div>
+          </div>
+          <div class="mt-5 flex items-baseline justify-between gap-4">
+            <div>
+              <h3 class="font-serif fluid-h3 text-charcoal group-hover:text-bronze transition-colors">Backwater Residence</h3>
+              <p class="text-xs uppercase tracking-[0.2em] text-muted mt-1">Residential · Kochi, India</p>
+            </div>
+            <span class="font-serif italic text-lg text-muted">2023</span>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- PINNED HORIZONTAL SCROLL GALLERY (Desktop Horizontal Pin / Mobile Fluid Touch Reel) -->
+    <section id="atmospheres" class="bg-charcoal text-alabaster overflow-hidden">
+      <div id="horizontalPinWrap" class="py-20 lg:py-0 lg:h-screen flex flex-col justify-center">
+        <!-- Section Top Bar -->
+        <div class="px-5 sm:px-10 lg:px-16 mb-10 lg:mb-12 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <p class="text-xs uppercase tracking-[0.25em] text-bronzeLt mb-2">Design Studies</p>
+            <h2 class="font-serif fluid-h2 font-light">Material &amp; Light Studies</h2>
+          </div>
+          <p class="text-xs uppercase tracking-[0.2em] text-stone/60">
+            <span class="hidden lg:inline">Scroll to pan gallery →</span>
+            <span class="lg:hidden">Scroll to explore studies →</span>
+          </p>
+        </div>
+
+        <!-- Horizontal Track (Swipeable on mobile, GSAP ScrollTrigger driven on desktop) -->
+        <div
+          id="horizontalTrack"
+          class="flex gap-6 sm:gap-10 px-5 sm:px-10 lg:px-16 overflow-x-auto lg:overflow-visible snap-x snap-mandatory pb-6 lg:pb-0 no-scrollbar"
+        >
+          <!-- Slide 1: Kitchen photograph by Clay Banks; source details in assets/images/sources.json -->
+          <div class="snap-center shrink-0 w-[84vw] sm:w-[60vw] lg:w-[44vw] group">
+            <div class="relative aspect-[16/10] overflow-hidden rounded-sm bg-espresso">
+              <img data-image-topic="material-and-light-studies" loading="lazy" decoding="async"
+                src="assets/images/wood-kitchen.jpg"
+                alt="Warm neutral kitchen with a timber island, stools and panelled cabinetry"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+              <span class="absolute bottom-4 left-4 text-[11px] uppercase tracking-[0.2em] bg-charcoal/70 backdrop-blur-md px-3 py-1 rounded-full">
+                Timber &amp; Warm Neutrals
+              </span>
+            </div>
+            <div class="mt-4 flex justify-between items-baseline">
+              <h3 class="font-serif text-2xl text-sand">Kitchens in Stone and Wood</h3>
+              
+            </div>
+          </div>
+
+          <!-- Slide 2 -->
+          <div class="snap-center shrink-0 w-[84vw] sm:w-[60vw] lg:w-[44vw] group">
+            <div class="relative aspect-[16/10] overflow-hidden rounded-sm bg-espresso">
+              <img data-image-topic="material-and-light-studies" loading="lazy" decoding="async"
+                src="assets/images/linen-lounge.jpg"
+                alt="Cream lounge chairs and linen curtains framing tall sunlit windows"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+              <span class="absolute bottom-4 left-4 text-[11px] uppercase tracking-[0.2em] bg-charcoal/70 backdrop-blur-md px-3 py-1 rounded-full">
+                Filtered Daylight
+              </span>
+            </div>
+            <div class="mt-4 flex justify-between items-baseline">
+              <h3 class="font-serif text-2xl text-sand">Lounges of Light and Shade</h3>
+              
+            </div>
+          </div>
+
+          <!-- Slide 3 -->
+          <div class="snap-center shrink-0 w-[84vw] sm:w-[60vw] lg:w-[44vw] group">
+            <div class="relative aspect-[16/10] overflow-hidden rounded-sm bg-espresso">
+              <img data-image-topic="material-and-light-studies" loading="lazy" decoding="async"
+                src="assets/images/warm-bedroom.jpg"
+                alt="Calm bedroom with a wooden wardrobe, green rug and soft natural light"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+              <span class="absolute bottom-4 left-4 text-[11px] uppercase tracking-[0.2em] bg-charcoal/70 backdrop-blur-md px-3 py-1 rounded-full">
+                Soft Neutral Layers
+              </span>
+            </div>
+            <div class="mt-4 flex justify-between items-baseline">
+              <h3 class="font-serif text-2xl text-sand">Restful Bedrooms</h3>
+              
+            </div>
+          </div>
+
+          <!-- Slide 4 -->
+          <div class="snap-center shrink-0 w-[84vw] sm:w-[60vw] lg:w-[44vw] group">
+            <div class="relative aspect-[16/10] overflow-hidden rounded-sm bg-espresso">
+              <img data-image-topic="material-and-light-studies" loading="lazy" decoding="async"
+                src="assets/images/timber-hallway.jpg"
+                alt="Timber-lined hallway opening to a lounge chair beside sheer curtains"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+              <span class="absolute bottom-4 left-4 text-[11px] uppercase tracking-[0.2em] bg-charcoal/70 backdrop-blur-md px-3 py-1 rounded-full">
+                Form &amp; Colour
+              </span>
+            </div>
+            <div class="mt-4 flex justify-between items-baseline">
+              <h3 class="font-serif text-2xl text-sand">Sculptural Furniture</h3>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTERACTIVE DISCIPLINES (Hover/Tap Crossfading Picture Preview) -->
+    <section id="disciplines" class="py-24 sm:py-32 lg:py-40 px-5 sm:px-10 lg:px-16 max-w-[1600px] mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+
+        <!-- Sticky Dynamic Image Preview -->
+        <div id="servicePreview" class="lg:col-span-5 lg:sticky lg:top-28 order-2 lg:order-1">
+          <div class="relative aspect-[4/5] w-full overflow-hidden rounded-sm bg-sand shadow-xl">
+            <img data-image-topic="interior-architecture" loading="lazy" decoding="async"
+              id="servicePreviewImg"
+              src="assets/images/wood-living-room.jpg"
+              alt="Timber-panelled living and dining room with crafted wooden furniture"
+              class="w-full h-full object-cover transition-all duration-700 ease-out"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-charcoal/50 via-transparent to-transparent"></div>
+            <div class="absolute bottom-6 left-6 right-6 text-alabaster">
+              <p id="servicePreviewLabel" class="text-[11px] uppercase tracking-[0.22em] text-sand/90">Interior Architecture</p>
+              <p id="servicePreviewCaption" class="font-serif italic text-2xl mt-1">Complete interior redesign</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive List -->
+        <div class="lg:col-span-7 order-1 lg:order-2">
+          <div class="flex items-center gap-3 text-xs uppercase tracking-[0.25em] text-bronze mb-4">
+            <span class="w-8 h-[1px] bg-bronze"></span>
+            <span>Our Services</span>
+          </div>
+          <h2 class="font-serif fluid-h2 font-light mb-12 split-reveal">Design from Start to Finish</h2>
+
+          <div class="divide-y divide-stone border-y border-stone">
+            <!-- Item 1 -->
+            <div
+              class="service-row active py-7 px-4 sm:px-6 cursor-pointer group"
+              data-img="assets/images/wood-living-room.jpg"
+              data-label="Interior Architecture"
+              data-alt="Timber-panelled living and dining room with crafted wooden furniture"
+              data-caption="Complete interior redesign"
+            >
+              <div class="flex items-baseline justify-between gap-4">
+                <div class="flex items-baseline gap-4 sm:gap-8">
+                  
+                  <h3 class="font-serif fluid-h3 text-charcoal group-hover:translate-x-2 transition-transform duration-300">
+                    Interior Architecture
+                  </h3>
+                </div>
+                <span class="text-xl text-muted group-hover:rotate-45 transition-transform duration-300">+</span>
+              </div>
+              <p class="service-desc mt-4 text-sm sm:text-base text-muted font-light max-w-xl leading-relaxed">
+                Space planning, custom woodwork and daylight design, from the first sketch to final handover.
+              </p>
+            </div>
+
+            <!-- Item 2 -->
+            <div
+              class="service-row py-7 px-4 sm:px-6 cursor-pointer group"
+              data-img="assets/images/artisan-dining.jpg"
+              data-label="Custom Furniture"
+              data-alt="Solid wood dining table with sculptural chairs, pendant lighting and contemporary art"
+              data-caption="Custom dining and sculptural pieces"
+            >
+              <div class="flex items-baseline justify-between gap-4">
+                <div class="flex items-baseline gap-4 sm:gap-8">
+                  
+                  <h3 class="font-serif fluid-h3 text-charcoal group-hover:translate-x-2 transition-transform duration-300">
+                    Custom Furniture &amp; Objects
+                  </h3>
+                </div>
+                <span class="text-xl text-muted group-hover:rotate-45 transition-transform duration-300">+</span>
+              </div>
+              <p class="service-desc hidden mt-4 text-sm sm:text-base text-muted font-light max-w-xl leading-relaxed">
+                One-of-a-kind dining tables, cast-bronze lights and handwoven textiles made with master artisans in Jaipur, Channapatna and Kutch.
+              </p>
+            </div>
+
+            <!-- Item 3 -->
+            <div
+              class="service-row py-7 px-4 sm:px-6 cursor-pointer group"
+              data-img="assets/images/hotel-suite.jpg"
+              data-label="Boutique Hospitality"
+              data-alt="Boutique guest suite with a dark upholstered headboard, lounge sofa and broad windows"
+              data-caption="Calm, tactile boutique hotels"
+            >
+              <div class="flex items-baseline justify-between gap-4">
+                <div class="flex items-baseline gap-4 sm:gap-8">
+                  
+                  <h3 class="font-serif fluid-h3 text-charcoal group-hover:translate-x-2 transition-transform duration-300">
+                    Boutique Hospitality
+                  </h3>
+                </div>
+                <span class="text-xl text-muted group-hover:rotate-45 transition-transform duration-300">+</span>
+              </div>
+              <p class="service-desc hidden mt-4 text-sm sm:text-base text-muted font-light max-w-xl leading-relaxed">
+                Calm resorts, members' clubs and restaurants designed to be remembered for their materials, touch and quiet sound.
+              </p>
+            </div>
+
+            <!-- Item 4 -->
+            <div
+              class="service-row py-7 px-4 sm:px-6 cursor-pointer group"
+              data-img="assets/images/artisan-dining.jpg"
+              data-label="Art &amp; Collectibles"
+              data-alt="Solid wood dining table with sculptural chairs, pendant lighting and contemporary art"
+              data-caption="Art and gallery curation"
+            >
+              <div class="flex items-baseline justify-between gap-4">
+                <div class="flex items-baseline gap-4 sm:gap-8">
+                  
+                  <h3 class="font-serif fluid-h3 text-charcoal group-hover:translate-x-2 transition-transform duration-300">
+                    Art &amp; Collectibles
+                  </h3>
+                </div>
+                <span class="text-xl text-muted group-hover:rotate-45 transition-transform duration-300">+</span>
+              </div>
+              <p class="service-desc hidden mt-4 text-sm sm:text-base text-muted font-light max-w-xl leading-relaxed">
+                Sourcing vintage mid-century pieces, contemporary ceramics and custom sculptures chosen for each space.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KINETIC EDITORIAL PRESS MARQUEE -->
+    <section class="py-12 border-y border-stone bg-sand/50 overflow-hidden">
+      <div class="marquee-track items-center gap-14 pr-14 text-charcoal/80">
+        <span class="font-serif italic text-2xl sm:text-4xl">Architectural Digest India — AD100 Honoree</span>
+        <span class="text-bronze">✦</span>
+        <span class="font-serif italic text-2xl sm:text-4xl">Wallpaper* Design Awards — Best Private Home</span>
+        <span class="text-bronze">✦</span>
+        <span class="font-serif italic text-2xl sm:text-4xl">Dezeen — Interior Practice of the Year Shortlist</span>
+        <span class="text-bronze">✦</span>
+        <span class="font-serif italic text-2xl sm:text-4xl">ELLE Decor India — The A-List</span>
+        <span class="text-bronze">✦</span>
+        <!-- Duplicated seamlessly for infinite marquee -->
+        <span class="font-serif italic text-2xl sm:text-4xl">Architectural Digest India — AD100 Honoree</span>
+        <span class="text-bronze">✦</span>
+        <span class="font-serif italic text-2xl sm:text-4xl">Wallpaper* Design Awards — Best Private Home</span>
+        <span class="text-bronze">✦</span>
+        <span class="font-serif italic text-2xl sm:text-4xl">Dezeen — Interior Practice of the Year Shortlist</span>
+        <span class="text-bronze">✦</span>
+        <span class="font-serif italic text-2xl sm:text-4xl">ELLE Decor India — The A-List</span>
+        <span class="text-bronze">✦</span>
+      </div>
+    </section>
+
+    <!-- FULL-BLEED VISUAL QUOTE / CALLOUT -->
+    <section id="our-belief" class="relative h-[70svh] min-h-[480px] w-full overflow-hidden flex items-center justify-center text-center px-5">
+      <img loading="lazy" decoding="async"
+        src="assets/images/sunlit-sideboard.jpg"
+        data-image-topic="daylight-and-calm" alt="Warm wood sideboard, ceramic vessels and a pale armchair in natural light"
+        class="absolute inset-0 w-full h-[120%] object-cover parallax-img brightness-[0.58]"
+      />
+      <div class="relative z-10 max-w-3xl text-alabaster">
+        <p class="text-xs uppercase tracking-[0.3em] text-sand/80 mb-6">Our Belief</p>
+        <blockquote class="font-serif italic text-3xl sm:text-5xl md:text-6xl font-bold leading-tight split-reveal">
+          “A room should never shout. It should hold light the way a clay pot holds water.”
+        </blockquote>
+        <p class="mt-6 text-xs uppercase tracking-[0.22em] text-sand/80">— Arjun Mehta, Principal Architect</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER & CONVERSATION CTA -->
+  <footer class="bg-charcoal text-alabaster pt-20 sm:pt-28 pb-12 px-5 sm:px-10 lg:px-16">
+    <div class="max-w-[1600px] mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 pb-20 border-b border-stone/15 items-end">
+        <div class="lg:col-span-8">
+          <p class="text-xs uppercase tracking-[0.25em] text-bronzeLt mb-4">Start a Project</p>
+          <h2 class="font-serif fluid-display font-light">
+            Let’s shape your <span class="italic text-sand">next space.</span>
+          </h2>
+        </div>
+        <div class="lg:col-span-4 lg:text-right">
+          <button
+            id="footerInquiryBtn"
+            class="inline-flex items-center gap-4 px-8 py-5 rounded-full bg-alabaster text-charcoal hover:bg-bronze hover:text-alabaster transition-colors duration-300 text-xs uppercase tracking-[0.22em] font-medium magnetic-el"
+          >
+            <span>Book a Private Consultation</span>
+            <span>↗</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Studio Locations & Links -->
+      <div class="py-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 text-sm text-stone/75 font-light">
+        <div>
+          <p class="text-xs uppercase tracking-[0.2em] text-alabaster mb-3">Bengaluru Studio</p>
+          <p>Indiranagar, 100 Feet Road</p>
+          <p>Bengaluru 560038, India</p>
+          <p class="mt-2 text-xs text-bronzeLt tabular-nums" id="timeKyoto">IST --:--</p>
+        </div>
+        <div>
+          <p class="text-xs uppercase tracking-[0.2em] text-alabaster mb-3">Mumbai Studio</p>
+          <p>Kala Ghoda, Fort</p>
+          <p>Mumbai 400001, India</p>
+          <p class="mt-2 text-xs text-bronze tabular-nums" id="timeMilan">IST --:--</p>
+        </div>
+        <div>
+          <p class="text-xs uppercase tracking-[0.2em] text-alabaster mb-3">Direct</p>
+          <p><a href="mailto:studio@nivaas.in" class="hover-line text-alabaster">studio@nivaas.in</a></p>
+          <p class="mt-1">+91 80 4120 7104</p>
+          <p class="mt-1">Press: press@nivaas.in</p>
+        </div>
+        <div class="flex flex-col justify-between">
+          <div>
+            <p class="text-xs uppercase tracking-[0.2em] text-alabaster mb-3">Index</p>
+            <div class="flex flex-wrap gap-x-6 gap-y-2 text-xs uppercase tracking-[0.16em]">
+              <a href="#works" class="hover-line">Work</a>
+              <a href="#philosophy" class="hover-line">About</a>
+              <a href="#atmospheres" class="hover-line">Studies</a>
+              <a href="#disciplines" class="hover-line">Services</a>
+            </div>
+          </div>
+          <button id="backToTop" class="mt-6 sm:mt-0 self-start lg:self-end text-xs uppercase tracking-[0.2em] text-sand hover-line">
+            Back to top ↑
+          </button>
+        </div>
+      </div>
+
+      <div class="pt-6 border-t border-stone/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-stone/60">
+        <p>© <span id="yr">2026</span> NIVAAS STUDIO ARCHITECTURE &amp; INTERIORS. ALL RIGHTS RESERVED.</p>
+        <p>DESIGNED WITH CARE IN INDIA</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- PROJECT CASE STUDY MODAL -->
+  <div id="projectModal" class="fixed inset-0 z-[80] hidden items-end sm:items-center justify-center sm:p-6 lg:p-10 bg-charcoal/85 backdrop-blur-md opacity-0 transition-opacity duration-300" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div id="projectModalCard" data-lenis-prevent class="relative w-full max-w-6xl h-[100svh] sm:h-auto sm:max-h-[92svh] overflow-y-auto bg-alabaster text-charcoal sm:rounded-sm shadow-2xl translate-y-8 transition-transform duration-500">
+      <div class="sticky top-0 z-30 h-0">
+        <button id="closeProjectModal" aria-label="Close case study" class="absolute right-4 top-[max(1rem,env(safe-area-inset-top))] w-11 h-11 rounded-full bg-alabaster/90 text-charcoal backdrop-blur flex items-center justify-center hover:bg-charcoal hover:text-alabaster transition-colors">✕</button>
+      </div>
+      <div class="relative aspect-[4/5] sm:aspect-[16/8] bg-sand overflow-hidden">
+        <img id="modalImg" src="" alt="" class="absolute inset-0 w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/10 to-transparent"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-10 lg:p-14 text-alabaster m-rise">
+          <p id="modalLocation" class="text-xs uppercase tracking-[0.22em] text-sand/90"></p>
+          <h3 id="modalTitle" class="font-serif font-light text-4xl sm:text-6xl lg:text-7xl mt-2 leading-[1.02]"></h3>
+        </div>
+      </div>
+      <div class="px-6 sm:px-10 lg:px-14 py-10 sm:py-14 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+        <div class="lg:col-span-5 m-rise">
+          <p id="modalArea" class="text-xs uppercase tracking-[0.22em] text-bronze"></p>
+          <p id="modalTag" class="font-serif italic text-2xl sm:text-3xl mt-4 leading-snug"></p>
+          <p id="modalDesc" class="mt-5 text-base text-muted font-light leading-relaxed"></p>
+          <div id="modalStats" class="mt-8 pt-8 border-t border-stone grid grid-cols-3 gap-4"></div>
+        </div>
+        <div class="lg:col-span-7 m-rise">
+          <p class="text-xs uppercase tracking-[0.25em] text-bronze mb-2">Scope of work</p>
+          <ol id="modalScope" class="divide-y divide-stone border-y border-stone"></ol>
+        </div>
+      </div>
+      <div class="pb-10 sm:pb-14 m-rise">
+        <div class="px-6 sm:px-10 lg:px-14 flex items-end justify-between mb-6">
+          <p class="text-xs uppercase tracking-[0.25em] text-bronze">Project gallery</p>
+          <div class="flex gap-2">
+            <button id="galPrev" aria-label="Previous images" class="w-10 h-10 rounded-full border border-stone hover:bg-charcoal hover:text-alabaster transition-colors">←</button>
+            <button id="galNext" aria-label="Next images" class="w-10 h-10 rounded-full border border-stone hover:bg-charcoal hover:text-alabaster transition-colors">→</button>
+          </div>
+        </div>
+        <div id="modalGallery" class="no-scrollbar flex gap-4 overflow-x-auto snap-x snap-mandatory px-6 sm:px-10 lg:px-14 scroll-px-6 sm:scroll-px-10 lg:scroll-px-14"></div>
+      </div>
+      <div class="px-6 sm:px-10 lg:px-14 pb-10 m-rise">
+        <p class="text-xs uppercase tracking-[0.25em] text-bronze mb-4">Materials</p>
+        <div id="modalMats" class="flex flex-wrap gap-2"></div>
+      </div>
+      <div class="px-6 sm:px-10 lg:px-14 py-6 border-t border-stone flex flex-wrap items-center justify-between gap-4 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+        <button id="modalNext" class="text-left group"><span class="block text-[11px] uppercase tracking-[0.2em] text-muted">Next project →</span><span id="modalNextTitle" class="font-serif text-2xl group-hover:text-bronze transition-colors"></span></button>
+        <button id="modalInquireTrigger" class="px-6 py-3 rounded-full bg-charcoal text-alabaster text-xs uppercase tracking-[0.2em] hover:bg-bronze transition-colors">Start a Similar Project →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE-OVER INQUIRY DRAWER -->
+  <div id="inquiryDrawer" class="fixed inset-0 z-[85] pointer-events-none" role="dialog" aria-modal="true" aria-label="Private consultation inquiry">
+    <div id="inquiryBackdrop" class="absolute inset-0 bg-charcoal/70 backdrop-blur-sm opacity-0 transition-opacity duration-500"></div>
+    <div id="inquiryPanel" data-lenis-prevent class="absolute top-0 right-0 h-full w-full max-w-xl bg-alabaster text-charcoal shadow-2xl translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] p-6 sm:p-12 overflow-y-auto flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between pb-6 border-b border-stone">
+          <span class="text-xs uppercase tracking-[0.24em] text-bronze">Private Consultation</span>
+          <button id="closeInquiryBtn" aria-label="Close inquiry" class="w-9 h-9 rounded-full border border-stone flex items-center justify-center hover:bg-charcoal hover:text-alabaster transition-colors">
+            ✕
+          </button>
+        </div>
+
+        <h3 class="font-serif text-3xl sm:text-4xl mt-8">Tell us about your space.</h3>
+        <p class="text-sm text-muted font-light mt-2">Our principal architects read every inquiry personally and reply within 48 hours.</p>
+
+        <form id="inquiryForm" class="mt-8 space-y-6">
+          <div>
+            <label class="block text-[11px] uppercase tracking-[0.2em] text-muted mb-2">Your Name *</label>
+            <input type="text" required placeholder="Ananya Rao" class="w-full bg-transparent border-b border-stone py-2.5 text-charcoal focus:outline-none focus:border-charcoal transition-colors" />
+          </div>
+          <div>
+            <label class="block text-[11px] uppercase tracking-[0.2em] text-muted mb-2">Email Address *</label>
+            <input type="email" required placeholder="ananya@example.com" class="w-full bg-transparent border-b border-stone py-2.5 text-charcoal focus:outline-none focus:border-charcoal transition-colors" />
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-[11px] uppercase tracking-[0.2em] text-muted mb-2">Project Type</label>
+              <select class="w-full bg-transparent border-b border-stone py-2.5 text-charcoal focus:outline-none focus:border-charcoal">
+                <option>Private Residence</option>
+                <option>Penthouse / Apartment</option>
+                <option>Boutique Hospitality</option>
+                <option>Custom Furniture</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] uppercase tracking-[0.2em] text-muted mb-2">Project Location</label>
+              <input type="text" placeholder="City / State" class="w-full bg-transparent border-b border-stone py-2.5 text-charcoal focus:outline-none focus:border-charcoal transition-colors" />
+            </div>
+          </div>
+          <div>
+            <label class="block text-[11px] uppercase tracking-[0.2em] text-muted mb-2">Project Details &amp; Timeline</label>
+            <textarea rows="3" placeholder="Tell us about the scope, approximate size and timeline..." class="w-full bg-transparent border-b border-stone py-2.5 text-charcoal focus:outline-none focus:border-charcoal transition-colors resize-none"></textarea>
+          </div>
+          <button type="submit" class="w-full py-4 rounded-full bg-charcoal text-alabaster hover:bg-bronze transition-colors text-xs uppercase tracking-[0.22em]">
+            Send Inquiry
+          </button>
+        </form>
+
+        <div id="inquirySuccess" class="hidden mt-10 p-6 bg-sand rounded-sm text-center">
+          <p class="font-serif italic text-2xl text-charcoal">Thank you for reaching out.</p>
+          <p class="text-xs uppercase tracking-[0.18em] text-muted mt-2">Our studio director will respond shortly.</p>
+        </div>
+      </div>
+
+      <p class="text-[11px] uppercase tracking-[0.18em] text-muted pt-8">
+        Bengaluru · Mumbai · Projects across India
+      </p>
+    </div>
+  </div>
+
+  <!-- SCRIPTS: GSAP Motions, Text Splitting, ScrollTrigger, Cross-Device Adaptability -->
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.config({ ignoreMobileResize: true });
+    // Smooth inertial scroll, synced with ScrollTrigger (touch keeps native scrolling)
+    let lenis = null;
+    if (window.Lenis) {
+      lenis = new Lenis({ duration: 1.15, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add(t => lenis.raf(t * 1000));
+      gsap.ticker.lagSmoothing(0);
+    }
+    // Failsafe: never leave the preloader up if something stalls
+    setTimeout(() => { const p = document.getElementById('preloader'); if (p) p.style.display = 'none'; }, 7000);
+
+    // 1. Custom Word Mask Splitter for Editorial Text Reveals
+    function splitTextIntoWords(selector) {
+      document.querySelectorAll(selector).forEach(el => {
+        if (el.dataset.splitDone) return;
+        el.dataset.splitDone = "true";
+
+        const processNode = (node) => {
+          if (node.nodeType === Node.TEXT_NODE) {
+            const words = node.textContent.split(/(\s+)/);
+            const frag = document.createDocumentFragment();
+            words.forEach(part => {
+              if (/^\s+$/.test(part) || part === '') {
+                frag.appendChild(document.createTextNode(part));
+              } else {
+                const mask = document.createElement('span');
+                mask.className = 'word-mask';
+                const inner = document.createElement('span');
+                inner.className = 'word-inner';
+                inner.textContent = part;
+                mask.appendChild(inner);
+                frag.appendChild(mask);
+              }
+            });
+            return frag;
+          } else if (node.nodeType === Node.ELEMENT_NODE) {
+            const clone = node.cloneNode(false);
+            Array.from(node.childNodes).forEach(child => {
+              clone.appendChild(processNode(child));
+            });
+            return clone;
+          }
+          return node.cloneNode(true);
+        };
+
+        const children = Array.from(el.childNodes);
+        el.innerHTML = '';
+        children.forEach(child => el.appendChild(processNode(child)));
+      });
+    }
+
+    splitTextIntoWords('.hero-split');
+    splitTextIntoWords('.split-reveal');
+
+    // 2. Preloader + Hero Entrance Sequence
+    const preloader = document.getElementById('preloader');
+    const preloaderCount = document.getElementById('preloaderCount');
+    const preloaderBar = document.getElementById('preloaderBar');
+    const preloaderTitle = document.getElementById('preloaderTitle');
+
+    const loadObj = { val: 0 };
+    const introTl = gsap.timeline();
+
+    introTl
+      .to(preloaderTitle, {
+        y: 0,
+        duration: 0.9,
+        ease: 'power4.out'
+      })
+      .to(loadObj, {
+        val: 100,
+        duration: 1.3,
+        ease: 'power2.inOut',
+        onUpdate: () => {
+          const v = Math.round(loadObj.val);
+          preloaderCount.textContent = v + '%';
+          preloaderBar.style.width = v + '%';
+        }
+      }, '-=0.5')
+      .to(preloader, {
+        yPercent: -100,
+        duration: 1.05,
+        ease: 'expo.inOut',
+        onComplete: () => {
+          preloader.style.display = 'none';
+          ScrollTrigger.refresh();
+        }
+      })
+      .from('#heroImg', {
+        scale: 1.24,
+        duration: 1.8,
+        ease: 'power3.out'
+      }, '-=0.8')
+      .from('.hero-split .word-inner', {
+        yPercent: 115,
+        rotate: 2,
+        duration: 1.1,
+        stagger: 0.045,
+        ease: 'power4.out'
+      }, '-=1.3')
+      .from('.hero-fade', {
+        y: 24,
+        opacity: 0,
+        duration: 0.9,
+        stagger: 0.12,
+        ease: 'power3.out'
+      }, '-=0.9');
+
+    // 3. Scroll-Driven Animations (Hero Parallax, Text Masks, Picture Clip-Reveals, Inner Image Parallax)
+    gsap.to('#heroImg', {
+      yPercent: 16,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#hero',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: true
+      }
+    });
+
+    // Split text scroll reveals
+    document.querySelectorAll('.split-reveal').forEach(heading => {
+      const words = heading.querySelectorAll('.word-inner');
+      gsap.from(words, {
+        yPercent: 115,
+        duration: 1,
+        stagger: 0.035,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: heading,
+          start: 'top 86%',
+          toggleActions: 'play none none none'
+        }
+      });
+    });
+
+    // Fade-up blocks
+    gsap.utils.toArray('.fade-up').forEach(el => {
+      gsap.from(el, {
+        y: 35,
+        opacity: 0,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 88%'
+        }
+      });
+    });
+
+    // Picture Reveal Masks on Scroll
+    gsap.utils.toArray('.img-reveal-wrap').forEach(wrap => {
+      gsap.fromTo(wrap,
+        { clipPath: 'inset(12% 0% 12% 0%)', opacity: 0.4 },
+        {
+          clipPath: 'inset(0% 0% 0% 0%)',
+          opacity: 1,
+          duration: 1.25,
+          ease: 'power4.out',
+          scrollTrigger: {
+            trigger: wrap,
+            start: 'top 88%'
+          }
+        }
+      );
+    });
+
+    // Subtle Vertical Parallax on Pictures
+    gsap.utils.toArray('.parallax-img').forEach(img => {
+      gsap.fromTo(img,
+        { yPercent: -7 },
+        {
+          yPercent: 7,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: img.parentElement,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true
+          }
+        }
+      );
+    });
+
+    // Animated Number Counters
+    gsap.utils.toArray('.counter').forEach(counter => {
+      const target = parseInt(counter.dataset.target, 10);
+      const countVal = { n: 0 };
+      gsap.to(countVal, {
+        n: target,
+        duration: 1.8,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: counter,
+          start: 'top 88%'
+        },
+        onUpdate: () => {
+          counter.textContent = Math.round(countVal.n);
+        }
+      });
+    });
+
+    // 4. Responsive GSAP matchMedia: Pinned Horizontal Scroll on Desktop, Native Touch Swipe on Mobile/Tablet
+    const mm = gsap.matchMedia();
+
+    const studiesTrack = document.getElementById('horizontalTrack');
+    const studiesWrap = document.getElementById('horizontalPinWrap');
+
+    function buildStudiesPin(extra) {
+      const getScrollAmount = () => -(studiesTrack.scrollWidth - window.innerWidth + extra);
+      return gsap.to(studiesTrack, {
+        x: getScrollAmount,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: studiesWrap,
+          start: 'top top',
+          end: () => `+=${studiesTrack.scrollWidth - window.innerWidth + extra}`,
+          pin: true,
+          anticipatePin: 1,
+          scrub: 1,
+          invalidateOnRefresh: true
+        }
+      });
+    }
+
+    // Desktop: pinned horizontal pan
+    mm.add('(min-width: 1024px)', () => {
+      const tween = buildStudiesPin(0);
+      return () => { tween.kill(); };
+    });
+
+    // Mobile / tablet: section stays locked until the last image is reached
+    mm.add('(max-width: 1023px)', () => {
+      studiesTrack.style.overflow = 'visible';
+      studiesTrack.style.scrollSnapType = 'none';
+      studiesWrap.style.minHeight = '100svh';
+      const tween = buildStudiesPin(24);
+      return () => {
+        tween.kill();
+        studiesTrack.style.overflow = '';
+        studiesTrack.style.scrollSnapType = '';
+        studiesWrap.style.minHeight = '';
+        gsap.set(studiesTrack, { clearProps: 'transform' });
+      };
+    });
+
+    // 5. Custom Reactive Cursor & Magnetic Hover (Desktop Pointer Devices)
+    const cursorDot = document.getElementById('cursorDot');
+    const cursorPill = document.getElementById('cursorPill');
+    const isFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    if (isFinePointer) {
+      const xDot = gsap.quickTo(cursorDot, 'x', { duration: 0.15, ease: 'power3' });
+      const yDot = gsap.quickTo(cursorDot, 'y', { duration: 0.15, ease: 'power3' });
+      const xPill = gsap.quickTo(cursorPill, 'x', { duration: 0.32, ease: 'power3' });
+      const yPill = gsap.quickTo(cursorPill, 'y', { duration: 0.32, ease: 'power3' });
+
+      window.addEventListener('mousemove', (e) => {
+        xDot(e.clientX);
+        yDot(e.clientY);
+        xPill(e.clientX);
+        yPill(e.clientY);
+      });
+
+      // Project Cards trigger pill cursor
+      document.querySelectorAll('[data-cursor]').forEach(card => {
+        card.addEventListener('mouseenter', () => {
+          cursorPill.textContent = card.dataset.cursor;
+          cursorPill.classList.add('active');
+          cursorDot.style.opacity = '0';
+        });
+        card.addEventListener('mouseleave', () => {
+          cursorPill.classList.remove('active');
+          cursorDot.style.opacity = '1';
+        });
+      });
+
+      // Magnetic Buttons
+      document.querySelectorAll('.magnetic-el').forEach(btn => {
+        btn.addEventListener('mousemove', (e) => {
+          const rect = btn.getBoundingClientRect();
+          const relX = e.clientX - rect.left - rect.width / 2;
+          const relY = e.clientY - rect.top - rect.height / 2;
+          gsap.to(btn, { x: relX * 0.25, y: relY * 0.25, duration: 0.35, ease: 'power2.out' });
+        });
+        btn.addEventListener('mouseleave', () => {
+          gsap.to(btn, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1, 0.4)' });
+        });
+      });
+    }
+
+    // 6. Portfolio Category Filter with Smooth GSAP Transition
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.project-card');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const filter = btn.dataset.filter;
+        document.getElementById('projectsGrid').classList.toggle('is-filtered', filter !== 'all');
+
+        filterBtns.forEach(b => {
+          b.classList.remove('bg-charcoal', 'text-alabaster');
+          b.classList.add('border', 'border-stone', 'text-charcoal');
+        });
+        btn.classList.add('bg-charcoal', 'text-alabaster');
+        btn.classList.remove('border', 'border-stone', 'text-charcoal');
+
+        projectCards.forEach(card => {
+          const matches = filter === 'all' || card.dataset.category === filter;
+          if (matches) {
+            card.style.display = 'block';
+            gsap.fromTo(card,
+              { autoAlpha: 0, y: 28 },
+              { autoAlpha: 1, y: 0, duration: 0.65, ease: 'power3.out' }
+            );
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        ScrollTrigger.refresh();
+      });
+    });
+
+    // 7. Interactive Disciplines Accordion + Dynamic Picture Crossfade
+    const serviceRows = document.querySelectorAll('.service-row');
+    const previewImg = document.getElementById('servicePreviewImg');
+    const previewLabel = document.getElementById('servicePreviewLabel');
+    const previewCaption = document.getElementById('servicePreviewCaption');
+    const servicePreview = document.getElementById('servicePreview');
+    const previewHome = servicePreview.parentElement;
+    const previewNextSibling = servicePreview.nextElementSibling;
+    const mobileServices = window.matchMedia('(max-width: 767px)');
+
+    function positionServicePreview() {
+      const activeRow = document.querySelector('.service-row.active');
+      if (mobileServices.matches && activeRow) {
+        activeRow.appendChild(servicePreview);
+      } else {
+        previewHome.insertBefore(servicePreview, previewNextSibling);
+      }
+      ScrollTrigger.refresh();
+    }
+    positionServicePreview();
+    mobileServices.addEventListener('change', positionServicePreview);
+
+    function activateServiceRow(row) {
+      if (row.classList.contains('active')) return;
+
+      serviceRows.forEach(r => {
+        r.classList.remove('active');
+        const desc = r.querySelector('.service-desc');
+        if (desc) desc.classList.add('hidden');
+      });
+
+      row.classList.add('active');
+      positionServicePreview();
+      const activeDesc = row.querySelector('.service-desc');
+      if (activeDesc) {
+        activeDesc.classList.remove('hidden');
+        gsap.fromTo(activeDesc, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' });
+      }
+
+      // Crossfade preview image
+      gsap.killTweensOf(previewImg);
+      gsap.to(previewImg, {
+        opacity: 0.25,
+        scale: 1.04,
+        duration: 0.22,
+        onComplete: () => {
+          previewImg.src = row.dataset.img;
+          previewImg.alt = row.dataset.alt;
+          previewImg.dataset.imageTopic = row.dataset.label;
+          previewLabel.textContent = row.dataset.label;
+          previewCaption.textContent = row.dataset.caption;
+          gsap.to(previewImg, { opacity: 1, scale: 1, duration: 0.55, ease: 'power2.out' });
+        }
+      });
+    }
+
+    serviceRows.forEach(row => {
+      row.addEventListener('click', () => activateServiceRow(row));
+      row.addEventListener('mouseenter', () => {
+        if (window.innerWidth >= 1024) activateServiceRow(row);
+      });
+    });
+
+    // Services: keyboard access + image preload
+    serviceRows.forEach(r => {
+      new Image().src = r.dataset.img;
+      r.tabIndex = 0; r.setAttribute('role', 'button');
+      r.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activateServiceRow(r); } });
+    });
+
+    // 8. Nav behaviour, scroll lock, focus handling
+    const $ = id => document.getElementById(id);
+    const nav = $('navbar');
+    ScrollTrigger.create({ start: 0, end: 'max', onUpdate: s => {
+      const y = s.scroll();
+      nav.classList.toggle('is-scrolled', y > 40);
+      nav.classList.toggle('nav-hidden', s.direction === 1 && y > 480);
+    }});
+    gsap.to('#progress', { scaleX: 1, ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: 0.2 } });
+
+    let locks = 0;
+    function lockScroll() {
+      if (locks++) return;
+      const sw = window.innerWidth - document.documentElement.clientWidth;
+      document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = sw + 'px';
+      nav.style.right = sw + 'px';
+      if (lenis) lenis.stop();
+    }
+    function unlockScroll() {
+      if (--locks > 0) return;
+      locks = 0;
+      document.body.style.overflow = ''; document.body.style.paddingRight = ''; nav.style.right = '';
+      if (lenis) lenis.start();
+    }
+    const FOCUSABLE = 'a[href],button:not([disabled]),input,select,textarea,[tabindex]:not([tabindex="-1"])';
+    let activeDialog = null, lastFocus = null, modalOpen = false, inqOpen = false, menuOpen = false;
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Tab' && activeDialog) {
+        const f = [...activeDialog.querySelectorAll(FOCUSABLE)].filter(x => x.offsetParent !== null);
+        if (!f.length) return;
+        const a = f[0], z = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === a) { e.preventDefault(); z.focus(); }
+        else if (!e.shiftKey && document.activeElement === z) { e.preventDefault(); a.focus(); }
+      }
+      if (e.key === 'Escape') {
+        if (modalOpen) closeProject(); else if (inqOpen) closeInquiry(); else if (menuOpen) toggleMobileMenu();
+      }
+    });
+    document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (!t) return;
+      e.preventDefault();
+      lenis ? lenis.scrollTo(t, { force: true }) : t.scrollIntoView({ behavior: 'smooth' });
+    }));
+
+    // 9. Project case studies (multi-section popup with gallery)
+    const U = (name) => `assets/images/${name}.${name.endsWith("-concept") ? "png" : "jpg"}`;
+    const P = [
+      { tag: 'A courtyard home that changes with the seasons.',
+        stats: [['Area', '4,500 sq ft'], ['Duration', '22 months'], ['Specialists', '11']],
+        scope: [['Space planning', 'Re-planned the house around the courtyard so every room gets daylight.'],
+          ['Charred teak facade', 'Burnt-finish teak cladding, hand-finished with natural wax for a soft matte look.'],
+          ['Kota stone floors', 'Hand-polished Kota stone laid as one continuous surface.'],
+          ['Custom jaali screens', 'Carved wooden screens that turn morning light into a soft glow.']],
+        mats: ['Charred teak', 'Kota stone', 'Jaali', 'Rosewood', 'Lime plaster'],
+        gal: [["green-courtyard", "Shaded courtyard"], ["wood-kitchen", "Warm timber kitchen"], ["warm-bedroom", "Quiet bedroom"], ["wood-living-room", "Timber living space"]] },
+      { tag: "A collector's home under old timber beams.",
+        stats: [['Area', '3,100 sq ft'], ['Duration', '16 months'], ['Artworks', '38']],
+        scope: [['Structural restoration', 'Kept the original timber beams and added a hidden steel frame.'],
+          ['Makrana marble work', 'Solid marble bathroom and fireplace blocks, honed on site.'],
+          ['Custom fabric seating', 'Sculptural sofas and chairs made in a Mumbai workshop.'],
+          ['Gallery-quality lighting', 'Adjustable track and recessed lights designed around the art collection.']],
+        mats: ['Makrana marble', 'Boucle', 'Aged oak', 'Brushed brass', 'Lime plaster'],
+        gal: [["linen-lounge", "Lounge in natural light"], ["artisan-dining", "Dining and collected art"], ["timber-hallway", "Sculptural seating"], ["sunlit-sideboard", "Furniture and ceramics"]] },
+      { tag: 'A desert retreat where earth walls meet the horizon.',
+        stats: [['Area', '7,300 sq ft'], ['Duration', '28 months'], ['Suites', '12']],
+        scope: [['Rammed-earth walls', 'Walls tinted with local ochre, built by regional craftspeople.'],
+          ['Sunken sandstone lounges', 'Seating pits that stay cool in the heat.'],
+          ['Cast bronze hardware', 'Door pulls, hooks and taps cast in small batches.'],
+          ['Passive cooling', 'Building orientation and deep window recesses that cut the need for air conditioning.']],
+        mats: ['Rammed earth', 'Jaisalmer sandstone', 'Cast bronze', 'Linen', 'Reclaimed acacia'],
+        gal: [["hotel-suite", "Guest suite"], ["marusthal-pavilion-concept", "AI concept: sandstone desert pavilion"], ["soft-bedroom", "Restful guest room"], ["artisan-dining", "Shared dining"]] },
+      { tag: 'Cool water reflections, softened by cotton and stone.',
+        stats: [['Area', '3,800 sq ft'], ['Duration', '19 months'], ['Custom pieces', '24']],
+        scope: [['Waterfront planning', 'Opened the ground floor to the backwater with a full-height glass edge.'],
+          ['Reclaimed teak flooring', 'Wide planks, lime-washed and oiled.'],
+          ['Hand-carved stone seating', 'A carved stone seat that anchors the verandah.'],
+          ['Handwoven upholstery', 'Custom seating in undyed handloom cotton for a warm feel.']],
+        mats: ['Reclaimed teak', 'Limestone', 'Granite', 'Handloom cotton', 'Smoked glass'],
+        gal: [["kochi-backwater-concept", "AI concept: Kerala waterfront home"], ["wood-kitchen", "Timber kitchen"], ["warm-bedroom", "Soft bedroom layers"], ["wood-living-room", "Natural wood interior"]] }
+    ];
+    const projectModal = $('projectModal'), projectModalCard = $('projectModalCard');
+    const cards = [...projectCards];
+    let cur = 0;
+    function fillProject(i) {
+      cur = i;
+      const c = cards[i], d = P[i];
+      $('modalImg').src = c.dataset.img; $('modalImg').alt = c.querySelector('img').alt;
+      $('modalTitle').textContent = c.dataset.title;
+      $('modalLocation').textContent = c.dataset.location;
+      $('modalArea').textContent = c.dataset.area;
+      $('modalDesc').textContent = c.dataset.desc;
+      $('modalTag').textContent = d.tag;
+      $('modalStats').innerHTML = d.stats.map(([k, v]) => `<div><p class="font-serif text-3xl sm:text-4xl">${v}</p><p class="mt-1 text-[11px] uppercase tracking-[0.18em] text-muted">${k}</p></div>`).join('');
+      $('modalScope').innerHTML = d.scope.map(([t, x], n) => `<li class="py-5 flex gap-5 sm:gap-8"><div><h4 class="font-serif text-2xl">${t}</h4><p class="mt-1 text-sm sm:text-base text-muted font-light leading-relaxed">${x}</p></div></li>`).join('');
+      $('modalGallery').innerHTML = d.gal.map(([id, cap], n) => `<figure class="snap-start shrink-0 w-[78%] sm:w-[46%] lg:w-[32%]"><div class="aspect-[4/5] overflow-hidden bg-sand rounded-sm"><img src="${U(id, 1000)}" alt="${c.dataset.title} — ${cap}" loading="lazy" decoding="async" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" /></div><figcaption class="mt-3 flex justify-between text-[11px] uppercase tracking-[0.18em] text-muted"><span>${cap}</span></figcaption></figure>`).join('');
+      $('modalGallery').scrollLeft = 0;
+      $('modalMats').innerHTML = d.mats.map(m => `<span class="px-4 py-2 border border-stone rounded-full text-[11px] uppercase tracking-[0.16em]">${m}</span>`).join('');
+      $('modalNextTitle').textContent = cards[(i + 1) % cards.length].dataset.title;
+    }
+    function riseIn() {
+      gsap.fromTo('#projectModalCard .m-rise', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, stagger: 0.07, ease: 'power3.out', delay: 0.12 });
+      gsap.fromTo('#modalImg', { scale: 1.15 }, { scale: 1, duration: 1.6, ease: 'power3.out' });
+    }
+    function openProject(i) {
+      fillProject(i);
+      lastFocus = document.activeElement;
+      projectModal.classList.remove('hidden'); projectModal.classList.add('flex');
+      projectModalCard.scrollTop = 0;
+      requestAnimationFrame(() => { projectModal.classList.remove('opacity-0'); projectModalCard.classList.remove('translate-y-8'); });
+      modalOpen = true; activeDialog = projectModalCard; lockScroll();
+      riseIn();
+      $('closeProjectModal').focus({ preventScroll: true });
+    }
+    function closeProject() {
+      if (!modalOpen) return;
+      modalOpen = false; activeDialog = null;
+      projectModal.classList.add('opacity-0'); projectModalCard.classList.add('translate-y-8');
+      setTimeout(() => { projectModal.classList.add('hidden'); projectModal.classList.remove('flex'); unlockScroll(); }, 350);
+      if (lastFocus) lastFocus.focus({ preventScroll: true });
+    }
+    cards.forEach((c, i) => {
+      c.tabIndex = 0; c.setAttribute('role', 'button'); c.setAttribute('aria-label', 'Open case study: ' + c.dataset.title);
+      c.addEventListener('click', () => openProject(i));
+      c.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openProject(i); } });
+    });
+    $('closeProjectModal').addEventListener('click', closeProject);
+    projectModal.addEventListener('click', e => { if (e.target === projectModal) closeProject(); });
+    $('modalNext').addEventListener('click', () => { fillProject((cur + 1) % cards.length); projectModalCard.scrollTo({ top: 0 }); riseIn(); });
+    $('galPrev').addEventListener('click', () => $('modalGallery').scrollBy({ left: -$('modalGallery').clientWidth * 0.6, behavior: 'smooth' }));
+    $('galNext').addEventListener('click', () => $('modalGallery').scrollBy({ left: $('modalGallery').clientWidth * 0.6, behavior: 'smooth' }));
+    $('modalInquireTrigger').addEventListener('click', () => { closeProject(); setTimeout(openInquiry, 360); });
+
+    // 10. Mobile menu
+    const mobileMenuBtn = $('mobileMenuBtn'), mobileMenu = $('mobileMenu'), line1 = $('burgerLine1'), line2 = $('burgerLine2');
+    mobileMenu.inert = true;
+    function toggleMobileMenu() {
+      menuOpen = !menuOpen;
+      mobileMenu.classList.toggle('pointer-events-none', !menuOpen);
+      mobileMenu.classList.toggle('opacity-0', !menuOpen);
+      mobileMenu.inert = !menuOpen;
+      mobileMenu.setAttribute('aria-hidden', String(!menuOpen));
+      mobileMenuBtn.setAttribute('aria-expanded', String(menuOpen));
+      nav.classList.toggle('menu-open', menuOpen);
+      line1.style.transform = menuOpen ? 'translateY(3.75px) rotate(45deg)' : '';
+      line2.style.transform = menuOpen ? 'translateY(-3.75px) rotate(-45deg)' : '';
+      if (menuOpen) {
+        gsap.fromTo('.mobile-link', { y: 24, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.06, duration: 0.5, ease: 'power3.out', delay: 0.1 });
+        lockScroll();
+      } else unlockScroll();
+    }
+    mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+    document.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', () => { if (menuOpen) toggleMobileMenu(); }));
+    window.matchMedia('(min-width: 768px)').addEventListener('change', e => { if (e.matches && menuOpen) toggleMobileMenu(); });
+
+    // 11. Inquiry drawer
+    const inquiryDrawer = $('inquiryDrawer'), inquiryBackdrop = $('inquiryBackdrop'), inquiryPanel = $('inquiryPanel');
+    const inquiryForm = $('inquiryForm'), inquirySuccess = $('inquirySuccess');
+    inquiryDrawer.inert = true;
+    inquiryForm.querySelectorAll('label').forEach((l, i) => {
+      const c = l.parentElement.querySelector('input,select,textarea');
+      c.id = 'inq' + i; l.htmlFor = c.id; c.name = l.textContent.replace('*', '').trim();
+      if (/Name/.test(c.name)) c.autocomplete = 'name'; if (/Email/.test(c.name)) c.autocomplete = 'email';
+    });
+    function openInquiry() {
+      if (inqOpen) return;
+      inqOpen = true; lastFocus = document.activeElement; activeDialog = inquiryPanel;
+      inquiryDrawer.inert = false;
+      inquiryDrawer.classList.remove('pointer-events-none');
+      inquiryBackdrop.classList.remove('opacity-0'); inquiryPanel.classList.remove('translate-x-full');
+      lockScroll();
+      setTimeout(() => inquiryForm.querySelector('input').focus({ preventScroll: true }), 300);
+    }
+    function closeInquiry() {
+      if (!inqOpen) return;
+      inqOpen = false; activeDialog = null;
+      inquiryBackdrop.classList.add('opacity-0'); inquiryPanel.classList.add('translate-x-full');
+      setTimeout(() => {
+        inquiryDrawer.classList.add('pointer-events-none'); inquiryDrawer.inert = true; unlockScroll();
+        inquiryForm.classList.remove('hidden'); inquirySuccess.classList.add('hidden'); inquiryForm.reset();
+      }, 500);
+      if (lastFocus) lastFocus.focus({ preventScroll: true });
+    }
+    ['openInquiryBtn', 'footerInquiryBtn', 'mobileInquireBtn'].forEach(id => $(id).addEventListener('click', openInquiry));
+    $('closeInquiryBtn').addEventListener('click', closeInquiry);
+    inquiryBackdrop.addEventListener('click', closeInquiry);
+    inquiryForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const body = [...inquiryForm.querySelectorAll('input,select,textarea')].map(c => `${c.name}: ${c.value}`).join('\n');
+      window.location.href = 'mailto:studio@nivaas.in?subject=' + encodeURIComponent('Project inquiry') + '&body=' + encodeURIComponent(body);
+      inquiryForm.classList.add('hidden'); inquirySuccess.classList.remove('hidden');
+      gsap.fromTo(inquirySuccess, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.5 });
+    });
+    $('yr').textContent = new Date().getFullYear();
+
+    // 11. Live Studio Clocks & Back-to-Top + Dynamic Resize Handling
+    function updateClocks() {
+      const now = new Date();
+      const kyotoStr = now.toLocaleTimeString('en-GB', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit' });
+      const milanStr = now.toLocaleTimeString('en-GB', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit' });
+      document.getElementById('timeKyoto').textContent = `IST ${kyotoStr}`;
+      document.getElementById('timeMilan').textContent = `IST ${milanStr}`;
+    }
+    updateClocks();
+    setInterval(updateClocks, 30000);
+
+    document.getElementById('backToTop').addEventListener('click', () => {
+      lenis ? lenis.scrollTo(0) : window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Dynamic screen resize debounced refresh for ScrollTrigger accuracy across orientations
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 220);
+    });
+  </script>
+</body>
+</html>
